@@ -849,6 +849,50 @@ Every project is an opportunity to create, learn, and push my craft further — 
 
     <!-- Site Main Js -->
     <script src="assets/js/script.js"></script>
+    <script>
+(function(){
+  const form = document.querySelector('section#contact form');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = (document.getElementById('fname') || {value:''}).value.trim();
+    const email = (document.getElementById('umail') || {value:''}).value.trim();
+    const phone = (document.getElementById('phone') || {value:''}).value.trim();
+    const message = (document.getElementById('exampleFormControlTextarea1') || {value:''}).value.trim();
+
+    const to = 'ayhammomani2003@gmail.com';
+    const subject = 'Website contact from ' + (name || email || 'website visitor');
+
+    // Build body lines and URL-encode
+    const lines = [];
+    if (name) lines.push('Name: ' + name);
+    if (email) lines.push('Email: ' + email);
+    if (phone) lines.push('Phone: ' + phone);
+    if (message) {
+      lines.push('');
+      lines.push('Message:');
+      lines.push(message);
+    }
+    const body = encodeURIComponent(lines.join('\r\n') || '');
+
+    // Mailto fallback
+    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+    // Preferred: open Gmail compose in new tab (works for most visitors who use Gmail)
+    const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${body}`;
+
+    // Try to open Gmail compose in a new tab. If popup is blocked, fallback to mailto (which may fail if no app).
+    const win = window.open(gmail, '_blank');
+    if (win) {
+      try { win.focus(); } catch (err) {}
+    } else {
+      // Popup blocked — use mailto (will open mail app if configured)
+      window.location.href = mailto;
+    }
+  });
+})();
+</script>
 
 </body>
 
