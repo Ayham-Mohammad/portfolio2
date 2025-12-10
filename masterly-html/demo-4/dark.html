@@ -899,7 +899,21 @@ Every project is an opportunity to create, learn, and push my craft further — 
   });
 })();
 </script>
-
+<script>
+// Temporary: force-unregister SW and clear caches for immediate client fix
+(function () {
+  if ('serviceWorker' in navigator) {
+    try {
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+    } catch (e) { /* ignore */ }
+  }
+  if ('caches' in window) {
+    try {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+    } catch (e) { /* ignore */ }
+  }
+})();
+</script>
 </body>
 
 </html>
