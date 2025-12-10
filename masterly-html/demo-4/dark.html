@@ -83,9 +83,7 @@ Author URI: https://themeforest.net/user/ashishmaraviya
                 <li class="nav-item">
                     <a class="nav-link ms-nav" href="#portfolio">Portfolio</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#news">News</a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link ms-nav" href="#contact">Contacts</a>
                 </li>
@@ -587,7 +585,7 @@ Every project is an opportunity to create, learn, and push my craft further — 
                                                     <a href="">Application</a> |
                                                     <a href="">UI/UX Design</a>
                                                 </div>
-                                                <p>I've helped improving and redesigning a Tourism app called visit Amman 
+                                                <p>I've helped improving and re-designing a Tourism app called visit Amman 
                                                     the app goal was to help tourist and give them guidance Jordan, Amman.
                                                    
                                                 </p>
@@ -794,8 +792,8 @@ Every project is an opportunity to create, learn, and push my craft further — 
                    
                     <!-- Start Single Contact List -->
                     <li>
-                        <a class="ms-list" data-number="918866774266"
-                            data-message="Share me your latest resume, HR from masterly...">
+                        <a class="ms-list" data-number="962795393408"
+                            data-message="Hi Ayham">
                             <div class="d-flex bd-highlight">
                                 <!-- Profile Picture -->
                                 <div class="ms-img-cont">
@@ -851,6 +849,50 @@ Every project is an opportunity to create, learn, and push my craft further — 
 
     <!-- Site Main Js -->
     <script src="assets/js/script.js"></script>
+    <script>
+(function(){
+  const form = document.querySelector('section#contact form');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = (document.getElementById('fname') || {value:''}).value.trim();
+    const email = (document.getElementById('umail') || {value:''}).value.trim();
+    const phone = (document.getElementById('phone') || {value:''}).value.trim();
+    const message = (document.getElementById('exampleFormControlTextarea1') || {value:''}).value.trim();
+
+    const to = 'ayhammomani2003@gmail.com';
+    const subject = 'Website contact from ' + (name || email || 'website visitor');
+
+    // Build body lines and URL-encode
+    const lines = [];
+    if (name) lines.push('Name: ' + name);
+    if (email) lines.push('Email: ' + email);
+    if (phone) lines.push('Phone: ' + phone);
+    if (message) {
+      lines.push('');
+      lines.push('Message:');
+      lines.push(message);
+    }
+    const body = encodeURIComponent(lines.join('\r\n') || '');
+
+    // Mailto fallback
+    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+    // Preferred: open Gmail compose in new tab (works for most visitors who use Gmail)
+    const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${body}`;
+
+    // Try to open Gmail compose in a new tab. If popup is blocked, fallback to mailto (which may fail if no app).
+    const win = window.open(gmail, '_blank');
+    if (win) {
+      try { win.focus(); } catch (err) {}
+    } else {
+      // Popup blocked — use mailto (will open mail app if configured)
+      window.location.href = mailto;
+    }
+  });
+})();
+</script>
 
 </body>
 
