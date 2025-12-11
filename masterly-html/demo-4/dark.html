@@ -111,8 +111,8 @@ Author URI: https://themeforest.net/user/ashishmaraviya
                              I enjoy turning complex ideas into simple, beautiful experiences that users understand instantly.
                               Every project is a chance to learn, explore, and design something better than yesterday</p>
                               
-                        <a href="/assets/files/CV.docx"
-   download="Ayham_Mohammad_CV.docx"
+                        <a href="/assets/files/CV.pdf"
+   download="Ayham_Mohammad_CV.pdf"
    class="ms-learn-more-right"
    role="button"
    aria-label="Download CV">
@@ -647,13 +647,13 @@ Every project is an opportunity to create, learn, and push my craft further &#82
             <div class="row achive m-tb-minus-12px" id="counter">
                 <div class="col-lg-3 col-md-6">
                     <div class="count-block" data-tilt>
-                        <h3><span class="counter counter-value" data-count="10">10</span>+</h3>
+                        <h3><span class="counter counter-value" data-count="5">5</span>+</h3>
                         <p>Clients</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="count-block" data-tilt>
-                        <h3><span class="counter counter-value" data-count="100">100</span>+</h3>
+                        <h3><span class="counter counter-value" data-count="30">30</span>+</h3>
                         <p>Projects</p>
                     </div>
                 </div>
@@ -899,6 +899,38 @@ Every project is an opportunity to create, learn, and push my craft further &#82
   });
 })();
 </script>
+
+
+(function(){
+  // Force-download the CV PDF if possible; falls back to normal navigation if fetch fails.
+  const sel = 'a[href="/assets/files/CV.pdf"], a[download="Ayham_Mohammad_CV.pdf"]';
+  const link = document.querySelector(sel);
+  if (!link) return;
+
+  link.addEventListener('click', async function(e){
+    e.preventDefault();
+    const fileUrl = link.href;
+    const filename = link.getAttribute('download') || 'CV.pdf';
+
+    try {
+      const res = await fetch(fileUrl, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch failed: ' + res.status);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (err) {
+      // fallback: open the PDF (viewer or default behavior)
+      window.location.href = fileUrl;
+    }
+  }, { passive: false });
+})();
 </body>
 
 </html>
