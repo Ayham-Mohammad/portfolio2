@@ -901,36 +901,7 @@ Every project is an opportunity to create, learn, and push my craft further &#82
 </script>
 
 
-(function(){
-  // Force-download the CV PDF if possible; falls back to normal navigation if fetch fails.
-  const sel = 'a[href="/assets/files/CV.pdf"], a[download="Ayham_Mohammad_CV.pdf"]';
-  const link = document.querySelector(sel);
-  if (!link) return;
 
-  link.addEventListener('click', async function(e){
-    e.preventDefault();
-    const fileUrl = link.href;
-    const filename = link.getAttribute('download') || 'CV.pdf';
-
-    try {
-      const res = await fetch(fileUrl, { cache: 'no-store' });
-      if (!res.ok) throw new Error('fetch failed: ' + res.status);
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    } catch (err) {
-      // fallback: open the PDF (viewer or default behavior)
-      window.location.href = fileUrl;
-    }
-  }, { passive: false });
-})();
 </body>
 
 </html>
