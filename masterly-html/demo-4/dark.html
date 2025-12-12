@@ -54,43 +54,100 @@ Author URI: https://themeforest.net/user/ashishmaraviya
     </div>
 
     <!-- Header Start -->
-    <header>
-        <nav>
-            <a href="javascript:void(0)" class="ms-sidebar-toggle"><img src="assets/img/icons/menu.svg" class="svg_img"
-                    alt="menu"></a>
-        </nav>
-    </header>
-    <!-- Header End -->
+<header>
+  <nav style="position:relative;">
+    <!-- Minimal, self-contained left-fixed toggle so it remains visible and clickable -->
+    <a href="javascript:void(0)" class="ms-sidebar-toggle" style="position:fixed; left:18px; top:18px; z-index:9999; width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:transparent; padding:0; border:0;">
+      <img src="assets/img/icons/menu.svg" class="svg_img" alt="menu" style="display:block; max-width:28px; max-height:28px;">
+    </a>
+    <!-- keep other header content (logo etc.) as-is after this nav if present -->
+  </nav>
+</header>
+<!-- Header End -->
 
-    <!-- Sidebar Start -->
-    <div class="ms-sidebar-overlay"></div>
-    <div class="ms-sidebar">
-        <div class="menu-list">
-            <a href="javascript:void(0)" class="close-sidebar">أ—</a>
-            <ul class="navbar-nav mb-2 ml-auto" id="top-menu">
-                <li class="nav-item active">
-                    <a class="nav-link ms-nav" aria-current="page" href="#home">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#experience">Experience</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#service">Service</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#portfolio">Portfolio</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link ms-nav" href="#contact">Contacts</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- Sidebar End -->
+<!-- Sidebar Start -->
+<div class="ms-sidebar-overlay" aria-hidden="true" style="position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:1000; display:none;"></div>
+
+<div class="ms-sidebar" style="position:fixed; top:0; left:0 !important; right:auto !important; width:320px; height:100%; transform:translateX(-100%); transition:transform .28s ease; z-index:1100; overflow-y:auto; background:inherit;">
+  <div class="menu-list" style="padding:20px; text-align:left; position:relative; z-index:1110;">
+    <a href="javascript:void(0)" class="close-sidebar" style="position:absolute; left:12px; top:12px; z-index:1120; font-size:24px; line-height:1;">—</a>
+    <ul class="navbar-nav mb-2 ml-auto" id="top-menu" style="margin-left:0; margin-right:auto;">
+      <li class="nav-item active"><a class="nav-link ms-nav" aria-current="page" href="#home">Home</a></li>
+      <li class="nav-item"><a class="nav-link ms-nav" href="#about">About</a></li>
+      <li class="nav-item"><a class="nav-link ms-nav" href="#experience">Experience</a></li>
+      <li class="nav-item"><a class="nav-link ms-nav" href="#service">Service</a></li>
+      <li class="nav-item"><a class="nav-link ms-nav" href="#portfolio">Portfolio</a></li>
+      <li class="nav-item"><a class="nav-link ms-nav" href="#contact">Contacts</a></li>
+    </ul>
+  </div>
+</div>
+<!-- Sidebar End -->
+
+<!-- Sidebar helper script (self-contained; placed here so only dark.html is changed) -->
+<script>
+(function(){
+  const toggle = document.querySelector('.ms-sidebar-toggle');
+  const sidebar = document.querySelector('.ms-sidebar');
+  const overlay = document.querySelector('.ms-sidebar-overlay');
+  const closeBtn = sidebar && sidebar.querySelector('.close-sidebar');
+
+  if (!sidebar || !overlay || !toggle) {
+    // required elements missing — nothing to do
+    return;
+  }
+
+  // Enforce left positioning (idempotent)
+  sidebar.style.left = '0';
+  sidebar.style.right = 'auto';
+  sidebar.style.position = 'fixed';
+  sidebar.style.transform = 'translateX(-100%)';
+  sidebar.style.transition = 'transform .28s ease';
+  sidebar.style.zIndex = '1100';
+  overlay.style.zIndex = '1000';
+  overlay.style.display = 'none';
+
+  function openSidebar() {
+    overlay.style.display = 'block';
+    // reflow so display takes effect
+    void overlay.offsetWidth;
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    sidebar.style.transform = 'translateX(0)';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    sidebar.style.transform = 'translateX(-100%)';
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!overlay.classList.contains('active')) overlay.style.display = 'none';
+    }, 320);
+  }
+
+  // Use a capturing handler and stopImmediatePropagation to ensure this handler runs first
+  function handler(e) {
+    e.preventDefault();
+    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    if (sidebar.classList.contains('open')) closeSidebar();
+    else openSidebar();
+  }
+
+  // Attach our authoritative handler to the toggle
+  try { toggle.onclick = null; } catch (err) {}
+  toggle.addEventListener('click', handler, true);
+
+  // Overlay and close button close the sidebar
+  overlay.addEventListener('click', function(e){ e.preventDefault(); closeSidebar(); }, true);
+  if (closeBtn) closeBtn.addEventListener('click', function(e){ e.preventDefault(); closeSidebar(); }, true);
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+  });
+})();
+</script>
 
     <!-- Hero Start -->
     <section id="home" class="ms-hero margin-b-50">
@@ -763,7 +820,7 @@ Every project is an opportunity to create, learn, and push my craft further &#82
         <div class="container">
             <div class="ms-footer-detail">
                 <div class="ms-copy">
-                    Copyright آ© <a class="site-name" ">Ayham Mohammad Momani</a> all rights reserved. Powered by
+                    Copyright  <a class="site-name" ">Ayham Mohammad Momani</a> all rights reserved. Powered by
                     Ayham Mohammad Momani
                 </div>
                 <div class="ms-social">
